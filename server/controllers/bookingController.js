@@ -1,5 +1,6 @@
 import Show from "../models/Show.js"
 import Booking from "../models/Booking.js"
+import stripe from "stripe";
 
 // function to check availability of selected seata for a movie
 const checkSeatsAvailability = async (showId, selectedSeats) =>{
@@ -27,7 +28,7 @@ export const createBooking = async (req, res) =>{
         //check seat availability
         const isAvailable = await checkSeatsAvailability(showId, selectedSeats)
 
-        if(!isAvailable){
+        if(isAvailable){
             return res.json({success : false, message : "Selected Seats are already booked. Please choose different seats."})
         }      
 
@@ -51,10 +52,39 @@ export const createBooking = async (req, res) =>{
         await showData.save()
 
         //stripe gateway initialize
+        const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
 
-        res.json({success : true, message : "Booking created successfully"})
+        // creating line items to for stripe
+        const line_items = [
+            {
+                price_data : {  
+                    currency : 'usd',
+                    product_data : {
+                        name : showData.movie.title,    
+                    },
+                    unit_amount : Math.floor(booking.amount ) *100
+                },
+                quantity : 1
+            }
+        ]
 
-    } catch (error) {
+        const session = await stripeInstance.checkout.sessions.create({
+            success_url : `${origin}/loading/my-bookings`,
+            cancel_url : `${origin}/my-bookings`,
+            line_items : line_items,
+            mode : 'payment',
+            metadata : {
+                bookingId : booking._id.toString()
+            },
+            expires_at : Math.floor(Date.now() / 1000) + 30 * 60 // 30 minutes from now
+        })
+
+        booking.paymentLink = session.url;
+        await booking.save()
+
+        res.json({success : true, message : "Booking created successfully", url : session.url})
+
+    } catch (error) { 
         console.log(error);
         res.json({success : false, message : error.message})
     }   

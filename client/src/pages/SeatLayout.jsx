@@ -13,7 +13,7 @@ const SeatLayout = () => {
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
 
   const { id, date } = useParams();
-
+  console.log(id, date);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [show, setShow] = useState(null);
@@ -96,8 +96,10 @@ const SeatLayout = () => {
         }
       });
       if (data.success) {
-        toast.success(data.message);
-        navigate('/my-bookings');
+        console.log(data);
+        // toast.success(data.message);
+        // navigate('/my-bookings');
+        window.location.href = data.url;
       } else {
         toast.error(data.message);
       } 
@@ -116,7 +118,7 @@ const SeatLayout = () => {
     }
   }, [selectedTime]);
 
-
+  console.log(show)
   return show ? (
     <div className="flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50">
       {/* Available Timing */}
