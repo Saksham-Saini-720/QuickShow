@@ -45,7 +45,7 @@ const MyBookings = () => {
         <BlurCircle bottom='0' left='600px'/>
       </div>
       <h1 className='text-lg font-semibold mb-4'>My Bookings</h1>
-
+      {console.log(bookings)}
       {bookings.map((item, index)=>(
         <div key={index} className='flex flex-col md:flex-row justify-between bg-primary/8 border border-primary/20 rounded-lg mt-4 p-2 max-w-3xl'>
             <div className='flex flex-col md:flex-row'>

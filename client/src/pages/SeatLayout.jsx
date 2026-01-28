@@ -2,7 +2,6 @@ import React, { useState, useEffect, use} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import { ArrowRightIcon, ClockIcon } from "lucide-react";
-import {dummyShowsData, dummyDateTimeData, assets} from "../assets/assets"
 import isoTimeFormat from "../lib/isoTimeFormat";
 import toast from "react-hot-toast";
 import BlurCircle from "../components/BlurCircle";
