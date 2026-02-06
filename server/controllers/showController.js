@@ -118,6 +118,7 @@ export const getShow = async(req, res) =>{
         const movie = await Movie.findById(movieId)
         const dateTime = {}
 
+        //date wise grouping
         shows.forEach(show => {
             const date = show.showDateTime.toISOString().split("T")[0];
             if(!dateTime[date]){

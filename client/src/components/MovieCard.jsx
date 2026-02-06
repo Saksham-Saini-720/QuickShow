@@ -12,7 +12,7 @@ const MovieCard = ({movie}) => {
   return (
     <div className='flex flex-col justify-between p-3 bg-gray-800 rounded-2xl hover:-translate-y-1 transition duration-300 w-66'>
 
-      <img onClick={()=>{navigate(`/movies/${movie._id}`); scrollTo(0,0)}} src={image_base_url+movie?.backdrop_path} alt="" className='rounded-lg h-52 w-full object-cover object-right-bottom cursor-pointer'/>
+      <img onClick={()=>{navigate(`/movies/${movie._id}`); scrollTo(0,0)}} src={image_base_url+movie?.backdrop_path} alt="" className='rounded-lg h-52 w-full object-cover object-bottom-right cursor-pointer'/>
 
       <p className='font-semibold mt-2 truncate'>{movie?.title}</p>
 
